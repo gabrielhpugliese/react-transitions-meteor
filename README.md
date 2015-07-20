@@ -1,1 +1,1 @@
-`cd .private && webpack && cd .. && meteor`
+`cd .private && npm install && node_modules/webpack/bin/webpack.js && cd .. && meteor`
