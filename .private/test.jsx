@@ -51,16 +51,30 @@ class Footer extends React.Component {
   }
 }
 
-class Home extends React.Component {
+class TransitionContent extends React.Component {
+  componentWillEnter (done) {
+    this.el = React.findDOMNode(this);
+
+    this.el.classList.add('content-enter-before');
+    requestAnimationFrame(() => {
+      this.el.classList.remove('content-enter-before');
+      this.el
+        .classList.add("content-enter");
+
+      requestAnimationFrame(() => {
+        this.el.classList.add("content-enter-active");
+        arrival(this.el, done);
+      });
+
+    });
+  }
+
   componentWillLeave (done) {
     this.el = React.findDOMNode(this);
 
-    // Before state applied immediately
-    this.el.classList.add("content-leave-before");
-
+    this.el.classList.add('content-leave-before');
     requestAnimationFrame(() => {
-      this.el
-        .classList.remove('content-leave-before');
+      this.el.classList.remove('content-leave-before');
       this.el
         .classList.add("content-leave");
 
@@ -71,6 +85,9 @@ class Home extends React.Component {
 
     });
   }
+}
+
+class Home extends TransitionContent {
 
   render () {
     return (
@@ -126,38 +143,7 @@ class Home extends React.Component {
   }
 }
 
-class Profile extends React.Component {
-  componentWillEnter (done) {
-    debugger;
-    this.el = React.findDOMNode(this);
-
-    requestAnimationFrame(() => {
-      this.el
-        .classList.add("content-enter");
-
-      requestAnimationFrame(() => {
-        this.el.classList.add("content-enter-active");
-        arrival(this.el, done);
-      });
-
-    });
-  }
-
-  componentWillLeave (done) {
-    this.el = React.findDOMNode(this);
-
-
-    requestAnimationFrame(() => {
-      this.el
-        .classList.add("content-leave");
-
-      requestAnimationFrame(() => {
-        this.el.classList.add("content-leave-active");
-        arrival(this.el, done);
-      });
-
-    });
-  }
+class Profile extends TransitionContent {
 
   render () {
     return (
