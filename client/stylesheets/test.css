@@ -1,10 +1,21 @@
-.initial{
+.content-enter {
+  opacity: 0;
+  transition: opacity .50s ease-in-out;
+  -moz-transition: opacity .50s ease-in-out;
+  -webkit-transition: opacity .50s ease-in-out;
+}
+
+.content-enter-active {
+  opacity: 1;
+}
+
+.content-leave {
   opacity: 1;
   transition: opacity .25s ease-in-out;
   -moz-transition: opacity .25s ease-in-out;
   -webkit-transition: opacity .25s ease-in-out;
 }
 
-.fade {
+.content-leave-active {
   opacity: 0;
 }

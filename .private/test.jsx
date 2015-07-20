@@ -1,5 +1,8 @@
 
-import React from 'react';
+import React from 'react/addons';
+import arrival from 'arrival';
+
+let { TransitionGroup } = React.addons;
 
 class Header extends React.Component {
   render () {
@@ -49,10 +52,29 @@ class Footer extends React.Component {
 }
 
 class Home extends React.Component {
+  componentWillLeave (done) {
+    this.el = React.findDOMNode(this);
+
+    // Before state applied immediately
+    this.el.classList.add("content-leave-before");
+
+    requestAnimationFrame(() => {
+      this.el
+        .classList.remove('content-leave-before');
+      this.el
+        .classList.add("content-leave");
+
+      requestAnimationFrame(() => {
+        this.el.classList.add("content-leave-active");
+        arrival(this.el, done);
+      });
+
+    });
+  }
+
   render () {
-    var className = 'content initial ' + this.props.className;
     return (
-      <div className={className}>
+      <div>
         <ul className="table-view">
           <li className="table-view-cell media">
             <a className="navigate-right" href="/profile" data-transition="slide-in">
@@ -104,6 +126,46 @@ class Home extends React.Component {
   }
 }
 
+class Profile extends React.Component {
+  componentWillEnter (done) {
+    debugger;
+    this.el = React.findDOMNode(this);
+
+    requestAnimationFrame(() => {
+      this.el
+        .classList.add("content-enter");
+
+      requestAnimationFrame(() => {
+        this.el.classList.add("content-enter-active");
+        arrival(this.el, done);
+      });
+
+    });
+  }
+
+  componentWillLeave (done) {
+    this.el = React.findDOMNode(this);
+
+
+    requestAnimationFrame(() => {
+      this.el
+        .classList.add("content-leave");
+
+      requestAnimationFrame(() => {
+        this.el.classList.add("content-leave-active");
+        arrival(this.el, done);
+      });
+
+    });
+  }
+
+  render () {
+    return (
+      <div>Profile here</div>
+    );
+  }
+}
+
 class App extends React.Component {
   constructor () {
     super();
@@ -122,63 +184,69 @@ class App extends React.Component {
 
   render () {
     var child;
-    var content;
+    var children = [<Home key="Home" />, <Profile key="Profile" />];
 
-    if (this.props.fade) {
-      content = this.state.prevContent;
+    if (this.props.content == 'Home') {
+      children.pop();
     } else {
-      content = this.props.content;
-    }
-
-    if (content == 'Home') {
-      child = Home;
-    } else {
-      child = Profile;
+      children.shift();
     }
 
     return (
       <div>
         <Header />
-        {React.createElement(child, {className: this.props.fade})}
+        <TransitionGroup className="content">
+          {children}
+        </TransitionGroup>
         <Footer />
       </div>
     );
   }
 }
 
-class Profile extends React.Component {
-
-  render () {
-    var className = 'content initial ' + this.props.className;
-    return (
-      <div className={className}>Profile here</div>
-    );
-  }
-}
+Meteor.startup(function () {
+  Tracker.autorun(function () {
+    React.render(<App content={FlowRouter.getRouteName()}></App>, document.body);
+  });
+});
 
 FlowRouter.route('/', {
-  name: 'Home',
-  action: function () {
-    Session.set('fade', 'fade');
-    Tracker.autorun(function () {
-      React.render(<App content={FlowRouter.getRouteName()} fade={Session.get('fade')}></App>, document.body);
-    });
-  }
+  name: 'Home'
 });
 
 FlowRouter.route('/profile', {
-  name: 'Profile',
-  action: function () {
-    Session.set('fade', 'fade');
-    Tracker.autorun(function () {
-      React.render(<App content={FlowRouter.getRouteName()} fade={Session.get('fade')}></App>, document.body);
-    });
-  }
+  name: 'Profile'
 });
 
-Tracker.autorun(function () {
-  FlowRouter.getRouteName();
-  Meteor.setTimeout(function () {
-    Session.set('fade', '');
-  }, 250);
-});
+
+
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+// requestAnimationFrame polyfill by Erik Möller
+// fixes from Paul Irish and Tino Zijdel
+
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
