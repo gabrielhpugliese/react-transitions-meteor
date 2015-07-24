@@ -184,6 +184,8 @@
 	  return Footer;
 	})(_reactAddons2['default'].Component);
 
+	Session.setDefault('finished', false);
+
 	var TransitionContent = (function (_React$Component3) {
 	  _inherits(TransitionContent, _React$Component3);
 
@@ -207,9 +209,22 @@
 
 	        requestAnimationFrame(function () {
 	          _this.el.classList.add('content-enter-active');
-	          (0, _arrival2['default'])(_this.el, done);
+	          function done2() {
+	            done();
+	            Session.set('finished', true);
+	            console.log('setting finished true');
+	          }
+	          (0, _arrival2['default'])(_this.el, done2);
 	        });
 	      });
+	    }
+	  }, {
+	    key: 'componentDidEnter',
+	    value: function componentDidEnter(done) {
+	      this.el.classList.remove('content-enter');
+	      this.el.classList.remove('content-enter-active');
+	      this.el.classList.remove('content-leave-before');
+	      this.el.classList.remove('content-leave');
 	    }
 	  }, {
 	    key: 'componentWillLeave',
@@ -218,15 +233,25 @@
 
 	      this.el = _reactAddons2['default'].findDOMNode(this);
 
-	      this.el.classList.add('content-leave-before');
-	      requestAnimationFrame(function () {
-	        _this2.el.classList.remove('content-leave-before');
-	        _this2.el.classList.add('content-leave');
+	      Tracker.autorun(function (c) {
+	        console.log('autorunning finished', Session.get('finished'));
+	        if (Session.equals('finished', true)) {
+	          _this2.el.classList.add('content-leave-before');
+	          requestAnimationFrame(function () {
+	            _this2.el.classList.remove('content-leave-before');
+	            _this2.el.classList.add('content-leave');
 
-	        requestAnimationFrame(function () {
-	          _this2.el.classList.add('content-leave-active');
-	          (0, _arrival2['default'])(_this2.el, done);
-	        });
+	            requestAnimationFrame(function () {
+	              _this2.el.classList.add('content-leave-active');
+	              function done2() {
+	                done();
+	                Session.set('finished', false);
+	                c.stop();
+	              }
+	              (0, _arrival2['default'])(_this2.el, done2);
+	            });
+	          });
+	        }
 	      });
 	    }
 	  }]);
@@ -247,88 +272,61 @@
 	    key: 'render',
 	    value: function render() {
 	      return _reactAddons2['default'].createElement(
-	        'div',
-	        null,
+	        'ul',
+	        { className: 'table-view' },
 	        _reactAddons2['default'].createElement(
-	          'ul',
-	          { className: 'table-view' },
+	          'li',
+	          { className: 'table-view-cell media' },
 	          _reactAddons2['default'].createElement(
-	            'li',
-	            { className: 'table-view-cell media' },
+	            'a',
+	            { className: 'navigate-right', href: '/profile', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-pages pull-left' }),
 	            _reactAddons2['default'].createElement(
-	              'a',
-	              { className: 'navigate-right', href: '/profile', 'data-transition': 'slide-in' },
-	              _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-pages pull-left' }),
-	              _reactAddons2['default'].createElement(
-	                'div',
-	                { className: 'media-body' },
-	                'All inboxes'
-	              )
-	            )
-	          ),
-	          _reactAddons2['default'].createElement(
-	            'li',
-	            { className: 'table-view-cell media' },
-	            _reactAddons2['default'].createElement(
-	              'a',
-	              { className: 'navigate-right', href: 'inbox.html', 'data-transition': 'slide-in' },
-	              _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-person pull-left' }),
-	              _reactAddons2['default'].createElement(
-	                'div',
-	                { className: 'media-body' },
-	                'Personal email'
-	              )
-	            )
-	          ),
-	          _reactAddons2['default'].createElement(
-	            'li',
-	            { className: 'table-view-cell media' },
-	            _reactAddons2['default'].createElement(
-	              'a',
-	              { className: 'navigate-right', href: 'inbox.html', 'data-transition': 'slide-in' },
-	              _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-star-filled pull-left' }),
-	              _reactAddons2['default'].createElement(
-	                'div',
-	                { className: 'media-body' },
-	                'Starred'
-	              )
-	            )
-	          ),
-	          _reactAddons2['default'].createElement(
-	            'li',
-	            { className: 'table-view-cell media' },
-	            _reactAddons2['default'].createElement(
-	              'a',
-	              { className: 'navigate-right', href: 'inbox.html', 'data-transition': 'slide-in' },
-	              _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-trash pull-left' }),
-	              _reactAddons2['default'].createElement(
-	                'div',
-	                { className: 'media-body' },
-	                'Trash'
-	              )
+	              'div',
+	              { className: 'media-body' },
+	              'All inboxes'
 	            )
 	          )
 	        ),
 	        _reactAddons2['default'].createElement(
-	          'h5',
-	          { className: 'content-padded' },
-	          'Other accounts'
+	          'li',
+	          { className: 'table-view-cell media' },
+	          _reactAddons2['default'].createElement(
+	            'a',
+	            { className: 'navigate-right', href: '/profile', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-pages pull-left' }),
+	            _reactAddons2['default'].createElement(
+	              'div',
+	              { className: 'media-body' },
+	              'All inboxes'
+	            )
+	          )
 	        ),
 	        _reactAddons2['default'].createElement(
-	          'ul',
-	          { className: 'table-view' },
+	          'li',
+	          { className: 'table-view-cell media' },
 	          _reactAddons2['default'].createElement(
-	            'li',
-	            { className: 'table-view-cell media' },
+	            'a',
+	            { className: 'navigate-right', href: '/profile', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-pages pull-left' }),
 	            _reactAddons2['default'].createElement(
-	              'a',
-	              { className: 'navigate-right', href: 'inbox.html', 'data-transition': 'slide-in' },
-	              _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-more pull-left' }),
-	              _reactAddons2['default'].createElement(
-	                'div',
-	                { className: 'media-body' },
-	                'Misc'
-	              )
+	              'div',
+	              { className: 'media-body' },
+	              'All inboxes'
+	            )
+	          )
+	        ),
+	        _reactAddons2['default'].createElement(
+	          'li',
+	          { className: 'table-view-cell media' },
+	          _reactAddons2['default'].createElement(
+	            'a',
+	            { className: 'navigate-right', href: '/profile', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-pages pull-left' }),
+	            _reactAddons2['default'].createElement(
+	              'div',
+	              { className: 'media-body' },
+	              'All inboxes'
 	            )
 	          )
 	        )
@@ -352,9 +350,64 @@
 	    key: 'render',
 	    value: function render() {
 	      return _reactAddons2['default'].createElement(
-	        'div',
-	        null,
-	        'Profile here'
+	        'ul',
+	        { className: 'table-view' },
+	        _reactAddons2['default'].createElement(
+	          'li',
+	          { className: 'table-view-cell media' },
+	          _reactAddons2['default'].createElement(
+	            'a',
+	            { className: 'navigate-right', href: '/', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-person pull-left' }),
+	            _reactAddons2['default'].createElement(
+	              'div',
+	              { className: 'media-body' },
+	              'Personal email'
+	            )
+	          )
+	        ),
+	        _reactAddons2['default'].createElement(
+	          'li',
+	          { className: 'table-view-cell media' },
+	          _reactAddons2['default'].createElement(
+	            'a',
+	            { className: 'navigate-right', href: '/', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-person pull-left' }),
+	            _reactAddons2['default'].createElement(
+	              'div',
+	              { className: 'media-body' },
+	              'Personal email'
+	            )
+	          )
+	        ),
+	        _reactAddons2['default'].createElement(
+	          'li',
+	          { className: 'table-view-cell media' },
+	          _reactAddons2['default'].createElement(
+	            'a',
+	            { className: 'navigate-right', href: '/', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-person pull-left' }),
+	            _reactAddons2['default'].createElement(
+	              'div',
+	              { className: 'media-body' },
+	              'Personal email'
+	            )
+	          )
+	        ),
+	        _reactAddons2['default'].createElement(
+	          'li',
+	          { className: 'table-view-cell media' },
+	          _reactAddons2['default'].createElement(
+	            'a',
+	            { className: 'navigate-right', href: '/', 'data-transition': 'slide-in' },
+	            _reactAddons2['default'].createElement('span', { className: 'media-object icon icon-person pull-left' }),
+	            _reactAddons2['default'].createElement(
+	              'div',
+	              { className: 'media-body' },
+	              'Personal email'
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);

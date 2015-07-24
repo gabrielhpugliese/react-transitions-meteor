@@ -51,6 +51,8 @@ class Footer extends React.Component {
   }
 }
 
+Session.setDefault('finished', false);
+
 class TransitionContent extends React.Component {
   componentWillEnter (done) {
     this.el = React.findDOMNode(this);
@@ -58,31 +60,52 @@ class TransitionContent extends React.Component {
     this.el.classList.add('content-enter-before');
     requestAnimationFrame(() => {
       this.el.classList.remove('content-enter-before');
-      this.el
-        .classList.add("content-enter");
+      this.el.classList.add("content-enter");
 
       requestAnimationFrame(() => {
         this.el.classList.add("content-enter-active");
-        arrival(this.el, done);
+        function done2 () {
+          done();
+          Session.set('finished', true);
+          console.log('setting finished true')
+        }
+        arrival(this.el, done2);
       });
 
     });
   }
 
+  componentDidEnter (done) {
+    this.el.classList.remove('content-enter');
+    this.el.classList.remove('content-enter-active');
+    this.el.classList.remove('content-leave-before');
+    this.el.classList.remove('content-leave');
+  }
+
   componentWillLeave (done) {
     this.el = React.findDOMNode(this);
 
-    this.el.classList.add('content-leave-before');
-    requestAnimationFrame(() => {
-      this.el.classList.remove('content-leave-before');
-      this.el
-        .classList.add("content-leave");
+    Tracker.autorun((c) => {
+      console.log('autorunning finished', Session.get('finished'))
+      if (Session.equals('finished', true)) {
+        this.el.classList.add('content-leave-before');
+        requestAnimationFrame(() => {
+          this.el.classList.remove('content-leave-before');
+          this.el.classList.add("content-leave");
 
-      requestAnimationFrame(() => {
-        this.el.classList.add("content-leave-active");
-        arrival(this.el, done);
-      });
+          requestAnimationFrame(() => {
+            this.el.classList.add("content-leave-active");
+            function done2 () {
+              done()
+              Session.set('finished', false);
+              c.stop();
+            }
+            arrival(this.el, done2);
 
+          });
+        });
+
+      }
     });
   }
 }
@@ -91,7 +114,6 @@ class Home extends TransitionContent {
 
   render () {
     return (
-      <div>
         <ul className="table-view">
           <li className="table-view-cell media">
             <a className="navigate-right" href="/profile" data-transition="slide-in">
@@ -102,43 +124,30 @@ class Home extends TransitionContent {
             </a>
           </li>
           <li className="table-view-cell media">
-            <a className="navigate-right" href="inbox.html" data-transition="slide-in">
-              <span className="media-object icon icon-person pull-left"></span>
+            <a className="navigate-right" href="/profile" data-transition="slide-in">
+              <span className="media-object icon icon-pages pull-left"></span>
               <div className="media-body">
-                Personal email
+                All inboxes
               </div>
             </a>
           </li>
           <li className="table-view-cell media">
-            <a className="navigate-right" href="inbox.html" data-transition="slide-in">
-              <span className="media-object icon icon-star-filled pull-left"></span>
+            <a className="navigate-right" href="/profile" data-transition="slide-in">
+              <span className="media-object icon icon-pages pull-left"></span>
               <div className="media-body">
-                Starred
+                All inboxes
               </div>
             </a>
           </li>
           <li className="table-view-cell media">
-            <a className="navigate-right" href="inbox.html" data-transition="slide-in">
-              <span className="media-object icon icon-trash pull-left"></span>
+            <a className="navigate-right" href="/profile" data-transition="slide-in">
+              <span className="media-object icon icon-pages pull-left"></span>
               <div className="media-body">
-                Trash
+                All inboxes
               </div>
             </a>
           </li>
         </ul>
-
-        <h5 className="content-padded">Other accounts</h5>
-        <ul className="table-view">
-          <li className="table-view-cell media">
-            <a className="navigate-right" href="inbox.html" data-transition="slide-in">
-              <span className="media-object icon icon-more pull-left"></span>
-              <div className="media-body">
-                Misc
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
     );
   }
 }
@@ -147,7 +156,40 @@ class Profile extends TransitionContent {
 
   render () {
     return (
-      <div>Profile here</div>
+      <ul className="table-view">
+        <li className="table-view-cell media">
+          <a className="navigate-right" href="/" data-transition="slide-in">
+            <span className="media-object icon icon-person pull-left"></span>
+            <div className="media-body">
+              Personal email
+            </div>
+          </a>
+        </li>
+        <li className="table-view-cell media">
+          <a className="navigate-right" href="/" data-transition="slide-in">
+            <span className="media-object icon icon-person pull-left"></span>
+            <div className="media-body">
+              Personal email
+            </div>
+          </a>
+        </li>
+        <li className="table-view-cell media">
+          <a className="navigate-right" href="/" data-transition="slide-in">
+            <span className="media-object icon icon-person pull-left"></span>
+            <div className="media-body">
+              Personal email
+            </div>
+          </a>
+        </li>
+        <li className="table-view-cell media">
+          <a className="navigate-right" href="/" data-transition="slide-in">
+            <span className="media-object icon icon-person pull-left"></span>
+            <div className="media-body">
+              Personal email
+            </div>
+          </a>
+        </li>
+      </ul>
     );
   }
 }
