@@ -75,9 +75,7 @@ class TransitionContent extends React.Component {
     });
   }
 
-  componentDidEnter (done) {
-    this.el.classList.remove('content-enter');
-    this.el.classList.remove('content-enter-active');
+  componentDidLeave () {
     this.el.classList.remove('content-leave-before');
     this.el.classList.remove('content-leave');
   }
@@ -85,6 +83,8 @@ class TransitionContent extends React.Component {
   componentWillLeave (done) {
     this.el = React.findDOMNode(this);
 
+    this.el.classList.remove('content-enter');
+    this.el.classList.remove('content-enter-active');
     Tracker.autorun((c) => {
       console.log('autorunning finished', Session.get('finished'))
       if (Session.equals('finished', true)) {

@@ -219,10 +219,8 @@
 	      });
 	    }
 	  }, {
-	    key: 'componentDidEnter',
-	    value: function componentDidEnter(done) {
-	      this.el.classList.remove('content-enter');
-	      this.el.classList.remove('content-enter-active');
+	    key: 'componentDidLeave',
+	    value: function componentDidLeave() {
 	      this.el.classList.remove('content-leave-before');
 	      this.el.classList.remove('content-leave');
 	    }
@@ -233,6 +231,8 @@
 
 	      this.el = _reactAddons2['default'].findDOMNode(this);
 
+	      this.el.classList.remove('content-enter');
+	      this.el.classList.remove('content-enter-active');
 	      Tracker.autorun(function (c) {
 	        console.log('autorunning finished', Session.get('finished'));
 	        if (Session.equals('finished', true)) {
