@@ -1,8 +1,8 @@
 
-import React from 'react/addons';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TransitionGroup from 'react-addons-transition-group';
 import arrival from 'arrival';
-
-let { TransitionGroup } = React.addons;
 
 class Header extends React.Component {
   render () {
@@ -55,7 +55,7 @@ Session.setDefault('content-enter-finished', false);
 
 class TransitionContent extends React.Component {
   componentWillEnter (done) {
-    this.el = React.findDOMNode(this);
+    this.el = ReactDOM.findDOMNode(this);
 
     this.el.classList.add('content-enter-before');
     requestAnimationFrame(() => {
@@ -73,13 +73,8 @@ class TransitionContent extends React.Component {
     });
   }
 
-  componentDidLeave () {
-    this.el.classList.remove('content-leave-before');
-    this.el.classList.remove('content-leave');
-  }
-
   componentWillLeave (done) {
-    this.el = React.findDOMNode(this);
+    this.el = ReactDOM.findDOMNode(this);
 
     this.el.classList.remove('content-enter');
     this.el.classList.remove('content-enter-active');
@@ -232,8 +227,12 @@ class App extends React.Component {
 }
 
 Meteor.startup(function () {
+  var container = document.createElement('div');
+  container.id = 'react-container';
+  document.body.appendChild(container);
+
   Tracker.autorun(function () {
-    React.render(<App content={FlowRouter.getRouteName()}></App>, document.body);
+    ReactDOM.render(<App content={FlowRouter.getRouteName()}></App>, container);
   });
 });
 
