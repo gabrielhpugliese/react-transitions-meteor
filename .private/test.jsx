@@ -51,7 +51,7 @@ class Footer extends React.Component {
   }
 }
 
-Session.setDefault('finished', false);
+Session.setDefault('content-enter-finished', false);
 
 class TransitionContent extends React.Component {
   componentWillEnter (done) {
@@ -66,7 +66,7 @@ class TransitionContent extends React.Component {
         this.el.classList.add("content-enter-active");
         arrival(this.el, () => {
           done();
-          Session.set('finished', true);
+          Session.set('content-enter-finished', true);
         });
       });
 
@@ -84,8 +84,7 @@ class TransitionContent extends React.Component {
     this.el.classList.remove('content-enter');
     this.el.classList.remove('content-enter-active');
     Tracker.autorun((c) => {
-
-      if (Session.equals('finished', true)) {
+      if (Session.equals('content-enter-finished', true)) {
         requestAnimationFrame(() => {
           this.el.classList.add("content-leave");
 
@@ -93,7 +92,7 @@ class TransitionContent extends React.Component {
             this.el.classList.add("content-leave-active");
             arrival(this.el, () => {
               done()
-              Session.set('finished', false);
+              Session.set('content-enter-finished', false);
               c.stop();
             });
           });

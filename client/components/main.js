@@ -184,7 +184,7 @@
 	  return Footer;
 	})(_reactAddons2['default'].Component);
 
-	Session.setDefault('finished', false);
+	Session.setDefault('content-enter-finished', false);
 
 	var TransitionContent = (function (_React$Component3) {
 	  _inherits(TransitionContent, _React$Component3);
@@ -211,7 +211,7 @@
 	          _this.el.classList.add('content-enter-active');
 	          (0, _arrival2['default'])(_this.el, function () {
 	            done();
-	            Session.set('finished', true);
+	            Session.set('content-enter-finished', true);
 	          });
 	        });
 	      });
@@ -232,8 +232,7 @@
 	      this.el.classList.remove('content-enter');
 	      this.el.classList.remove('content-enter-active');
 	      Tracker.autorun(function (c) {
-
-	        if (Session.equals('finished', true)) {
+	        if (Session.equals('content-enter-finished', true)) {
 	          requestAnimationFrame(function () {
 	            _this2.el.classList.add('content-leave');
 
@@ -241,7 +240,7 @@
 	              _this2.el.classList.add('content-leave-active');
 	              (0, _arrival2['default'])(_this2.el, function () {
 	                done();
-	                Session.set('finished', false);
+	                Session.set('content-enter-finished', false);
 	                c.stop();
 	              });
 	            });
