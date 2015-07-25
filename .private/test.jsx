@@ -59,17 +59,15 @@ class TransitionContent extends React.Component {
 
     this.el.classList.add('content-enter-before');
     requestAnimationFrame(() => {
-      this.el.classList.remove('content-enter-before');
       this.el.classList.add("content-enter");
+      this.el.classList.remove('content-enter-before');
 
       requestAnimationFrame(() => {
         this.el.classList.add("content-enter-active");
-        function done2 () {
+        arrival(this.el, () => {
           done();
           Session.set('finished', true);
-          console.log('setting finished true')
-        }
-        arrival(this.el, done2);
+        });
       });
 
     });
@@ -86,22 +84,18 @@ class TransitionContent extends React.Component {
     this.el.classList.remove('content-enter');
     this.el.classList.remove('content-enter-active');
     Tracker.autorun((c) => {
-      console.log('autorunning finished', Session.get('finished'))
+
       if (Session.equals('finished', true)) {
-        this.el.classList.add('content-leave-before');
         requestAnimationFrame(() => {
-          this.el.classList.remove('content-leave-before');
           this.el.classList.add("content-leave");
 
           requestAnimationFrame(() => {
             this.el.classList.add("content-leave-active");
-            function done2 () {
+            arrival(this.el, () => {
               done()
               Session.set('finished', false);
               c.stop();
-            }
-            arrival(this.el, done2);
-
+            });
           });
         });
 
@@ -147,6 +141,9 @@ class Home extends TransitionContent {
               </div>
             </a>
           </li>
+          <li className="table-view-cell media">
+            <img className="cat" src="images/cat1.jpg" />
+          </li>
         </ul>
     );
   }
@@ -188,6 +185,9 @@ class Profile extends TransitionContent {
               Personal email
             </div>
           </a>
+        </li>
+        <li className="table-view-cell media">
+          <img className="cat" src="images/cat2.jpg" />
         </li>
       </ul>
     );

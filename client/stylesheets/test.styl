@@ -1,0 +1,54 @@
+@import 'nib'
+
+.content {
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.content-enter-before {
+  display: none;
+}
+
+.content-enter {
+  z-index: 3;
+  box-shadow: -5px 0 4px -3px #404040;
+  transform: translate3d(98%, 0, 0);
+}
+
+.content-enter-active {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.content-leave {
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.content-leave-active {
+  opacity: 0.01;
+}
+
+.content ul {
+  position: absolute;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: transform 450ms cubic-bezier(.36, .66, .04, 1), opacity 50ms linear;
+}
+
+.content>.table-view {
+  margin-top: 0px !important;
+}
+
+.content-appear {
+  display: block !important;
+}
+
+
+.cat {
+  width: 100%;
+}
