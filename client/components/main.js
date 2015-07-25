@@ -67,15 +67,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(166);
+	var _reactDom = __webpack_require__(156);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactAddonsTransitionGroup = __webpack_require__(156);
+	var _reactAddonsTransitionGroup = __webpack_require__(157);
 
 	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 
-	var _arrival = __webpack_require__(162);
+	var _arrival = __webpack_require__(163);
 
 	var _arrival2 = _interopRequireDefault(_arrival);
 
@@ -19321,10 +19321,17 @@
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(157);
+	module.exports = __webpack_require__(5);
+
 
 /***/ },
 /* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(158);
+
+/***/ },
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19341,10 +19348,10 @@
 	'use strict';
 
 	var React = __webpack_require__(4);
-	var ReactTransitionChildMapping = __webpack_require__(158);
+	var ReactTransitionChildMapping = __webpack_require__(159);
 
 	var assign = __webpack_require__(12);
-	var cloneWithProps = __webpack_require__(159);
+	var cloneWithProps = __webpack_require__(160);
 	var emptyFunction = __webpack_require__(18);
 
 	var ReactTransitionGroup = React.createClass({
@@ -19535,7 +19542,7 @@
 	module.exports = ReactTransitionGroup;
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19641,7 +19648,7 @@
 	module.exports = ReactTransitionChildMapping;
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -19659,7 +19666,7 @@
 	'use strict';
 
 	var ReactElement = __webpack_require__(42);
-	var ReactPropTransferer = __webpack_require__(160);
+	var ReactPropTransferer = __webpack_require__(161);
 
 	var keyOf = __webpack_require__(94);
 	var warning = __webpack_require__(17);
@@ -19696,7 +19703,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19714,7 +19721,7 @@
 
 	var assign = __webpack_require__(12);
 	var emptyFunction = __webpack_require__(18);
-	var joinClasses = __webpack_require__(161);
+	var joinClasses = __webpack_require__(162);
 
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -19809,7 +19816,7 @@
 	module.exports = ReactPropTransferer;
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports) {
 
 	/**
@@ -19853,7 +19860,7 @@
 	module.exports = joinClasses;
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19861,9 +19868,9 @@
 	 */
 
 	var style = getComputedStyle;
-	var transitionend = __webpack_require__(163);
-	var prefix = __webpack_require__(164);
-	var matches = __webpack_require__(165);
+	var transitionend = __webpack_require__(164);
+	var prefix = __webpack_require__(165);
+	var matches = __webpack_require__(166);
 
 	/**
 	 * Return a floating point number from a string
@@ -19955,7 +19962,7 @@
 
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports) {
 
 	/**
@@ -19985,7 +19992,7 @@
 
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports) {
 
 	
@@ -20065,7 +20072,7 @@
 
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -20097,13 +20104,6 @@
 	  }
 	  return false;
 	}
-
-/***/ },
-/* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(5);
-
 
 /***/ }
 /******/ ]);
